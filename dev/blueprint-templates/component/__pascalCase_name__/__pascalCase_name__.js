@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 // import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from './{{pascalCase name}}.module.scss';
@@ -17,7 +16,7 @@ const Component = ({ className, children }) => {
     // dispatch(actionName(`whatToDispatch`));
   }, []);
   return (
-    <div className={clsx(className, styles.root)}>
+    <div className={styles.root}>
       <Container>
         <Row>
           <Col>
@@ -32,7 +31,6 @@ const Component = ({ className, children }) => {
 
 Component.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string,
 };
 
 export { Component as {{pascalCase name}}, Component as {{pascalCase name}}Component };

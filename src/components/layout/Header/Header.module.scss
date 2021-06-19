@@ -1,5 +1,13 @@
 @import "../../../styles/settings.scss";
 
+.root {
+  @include flex(row, center, space-around);
+  height: 15vh;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+}
+
 /* ExtraExtraLarge Devices, UltraWide Desktops  */
 @media (min-width: 1921px) {
   .root {

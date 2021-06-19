@@ -6,12 +6,12 @@ import { HomePage } from './components/views/HomePage/HomePage';
 // import { NotFound } from './components/views/NotFound/NotFound';
 import './styles/bootstrap.scss';
 import './styles/normalize.scss';
-// import styles from './App.module.scss';
+import styles from './App.module.scss';
 
 const App = () => {
   console.log(`hey`);
   return (
-    <div className="App">
+    <div className={styles.root}>
       <BrowserRouter>
         <MainLayout>
           <Route exact path="/" component={() => <HomePage />} />

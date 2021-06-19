@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Container } from 'react-bootstrap';
 import { Header } from '../Header/Header';
 
 import styles from './MainLayout.module.scss';
 
 const Component = ({ children }) => (
   <div className={styles.root}>
-    <Header />
-    <div>{children}</div>
+    <Container className={styles.pageContainer}>
+      <Header />
+      <div>{children}</div>
+    </Container>
   </div>
 );
 

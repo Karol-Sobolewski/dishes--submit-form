@@ -1,0 +1,4 @@
+@font-face {
+  font-family: "Chalk";
+  src: local("Chalk"), url(./fonts/chalk.ttf) format("truetype");
+}

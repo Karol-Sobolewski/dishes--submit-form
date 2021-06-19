@@ -19,9 +19,7 @@ const Component = ({ children }) => {
     <div className={styles.root}>
       <Container>
         <Row>
-          <Col>
-            <h2>Header</h2>
-          </Col>
+          <h1>Dishes Form</h1>
         </Row>
         <main>{children}</main>
       </Container>
