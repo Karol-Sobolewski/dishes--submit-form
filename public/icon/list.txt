@@ -1,0 +1,9 @@
+android-icon-144x144.png  apple-icon-152x152.png      favicon-32x32.png
+android-icon-192x192.png  apple-icon-180x180.png      favicon-96x96.png
+android-icon-36x36.png	  apple-icon-57x57.png	      favicon.ico
+android-icon-48x48.png	  apple-icon-60x60.png	      list.txt
+android-icon-72x72.png	  apple-icon-72x72.png	      ms-icon-144x144.png
+android-icon-96x96.png	  apple-icon-76x76.png	      ms-icon-150x150.png
+apple-icon-114x114.png	  apple-icon-precomposed.png  ms-icon-310x310.png
+apple-icon-120x120.png	  apple-icon.png	      ms-icon-70x70.png
+apple-icon-144x144.png	  favicon-16x16.png
