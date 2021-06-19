@@ -10,7 +10,8 @@ const Component = ({ children }) => (
   <div className={styles.root}>
     <Container className={styles.pageContainer}>
       <Header />
-      <div>{children}</div>
+      {children}
+      {/* <p>Footer</p> */}
     </Container>
   </div>
 );

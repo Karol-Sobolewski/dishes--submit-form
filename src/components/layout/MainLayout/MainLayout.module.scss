@@ -1,11 +1,7 @@
 @import "../../../styles/settings.scss";
 
 .root {
-  // width: 90%;
-
   .pageContainer {
-    background-image: url("/images/chalkboard.jpg");
-    background-repeat: repeat;
     min-height: 100vh;
     @include flex(column, center, center);
   }

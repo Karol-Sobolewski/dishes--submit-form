@@ -1,5 +1,16 @@
 @import "../../../styles/settings.scss";
 
+.root {
+  @include flex(column, center, space-around);
+  height: 50vh;
+  width: 90%;
+  border: 50px white solid;
+  border-image: url("/images/border.svg") 100;
+  * {
+    margin: 1rem;
+  }
+}
+
 /* ExtraExtraLarge Devices, UltraWide Desktops  */
 @media (min-width: 1921px) {
   .root {

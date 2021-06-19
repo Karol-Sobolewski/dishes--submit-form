@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { Container, Row, Col } from 'react-bootstrap';
 import { Button } from '@material-ui/core';
-import { Form } from '../../features/Form/Form';
+import Form from '../../features/Form/Form';
 import styles from './HomePage.module.scss';
 
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
@@ -19,14 +19,8 @@ const Component = ({ children }) => {
   }, []);
   return (
     <div className={styles.root}>
-      <Container>
-        <Row>
-          <Col>
-            <Form />
-          </Col>
-        </Row>
-        <main>{children}</main>
-      </Container>
+      <Form />
+      <main>{children}</main>
     </div>
   );
 };
