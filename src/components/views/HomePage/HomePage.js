@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Container, Row, Col } from 'react-bootstrap';
-import styles from './Header.module.scss';
+import styles from './HomePage.module.scss';
 
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 const Component = ({ children }) => {
-  console.log(`Header`);
+  console.log(`HomePage`);
   // const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const Component = ({ children }) => {
       <Container>
         <Row>
           <Col>
-            <h2>Header</h2>
+            <h2>HomePage</h2>
           </Col>
         </Row>
         <main>{children}</main>
@@ -33,4 +33,4 @@ Component.propTypes = {
   children: PropTypes.node,
 };
 
-export { Component as Header, Component as HeaderComponent };
+export { Component as HomePage, Component as HomePageComponent };
