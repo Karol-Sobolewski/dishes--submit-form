@@ -21,11 +21,11 @@ import styles from './Form.module.scss';
 
 let Form = ({
   children,
-  type,
-  diameter,
-  slicesOfPizza,
-  spiciness,
+  dishType,
+  pizzaDiameter,
   slicesOfBread,
+  slicesOfPizza,
+  soupSpiciness,
 }) => {
   /* eslint-disable react/jsx-props-no-spreading */
 
@@ -36,45 +36,30 @@ let Form = ({
   // useEffect(() => {
   //   dispatch(actionName(`whatToDispatch`));
   // }, []);
-  const renderTimePicker = ({
-    input,
-    label,
-    meta: { touched, error },
-    ...custom
-  }) => (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <TimePicker
-        ampm={false}
-        openTo="hours"
-        views={[`hours`, `minutes`, `seconds`]}
-        inputFormat="HH:mm:ss"
-        mask="__:__:__"
-        // label={value}
-        // value={value}
-        defaultValue="01:00:00"
-        // onChange={(newValue) => {
-        //   setValue(newValue);
-        // }}
-        renderInput={(params) => <TextField {...params} />} //eslint-disable-line
-        {...input} //eslint-disable-line
-      {...custom} //eslint-disable-line
-      />
-    </LocalizationProvider>
-  );
 
-  const renderRadioGroup = ({ input, ...rest }) => (
-    <RadioGroup
-      row
-      {...input}
-      {...rest}
-      valueSelected={input.value}
-      onChange={(event, value) => input.onChange(value)}
-    />
-  );
+  // const renderTimePicker = ({
+  //   input,
+  //   label,
+  //   meta: { touched, error },
+  //   ...custom
+  // }) => (
+  //   <LocalizationProvider dateAdapter={AdapterDateFns}>
+  //     <TimePicker
+  //       ampm={false}
+  //       openTo="hours"
+  //       views={[`hours`, `minutes`, `seconds`]}
+  //       inputFormat="HH:mm:ss"
+  //       mask="__:__:__"
+  //       defaultValue="01:00:00"
+  //       renderInput={(params) => <TextField {...params} />}
+  //       {...input}
+  //       {...custom}
+  //     />
+  //   </LocalizationProvider>
+  // );
 
   const handleDishType = () => {
-    if (type === `pizza`) {
-      console.log(`noOfSlices`, slicesOfPizza);
+    if (dishType === `pizza`) {
       return (
         <div>
           <Typography>Slices: {slicesOfPizza}</Typography>
@@ -82,18 +67,18 @@ let Form = ({
             name="slicesOfPizza"
             component={Slider}
             className={styles.formSlider}
-            defaultValue={slicesOfPizza}
+            defaultValue={0}
             format={null}
             min={1}
             max={10}
             step="1"
           />
-          <Typography>Diameter: {diameter} cm</Typography>
+          <Typography>Diameter: {pizzaDiameter} cm</Typography>
           <Field
-            name="diameter"
+            name="pizzaDiameter"
             component={Slider}
             className={styles.formSlider}
-            defaultValue={diameter}
+            defaultValue={pizzaDiameter}
             format={null}
             min={10}
             max={60}
@@ -102,15 +87,15 @@ let Form = ({
         </div>
       );
     }
-    if (type === `soup`) {
+    if (dishType === `soup`) {
       return (
         <div>
-          <Typography>Spiciness: {spiciness}</Typography>
+          <Typography>Spiciness: {soupSpiciness}</Typography>
           <Field
-            name="spiciness"
+            name="soupSpiciness"
             component={Slider}
             className={styles.formSlider}
-            defaultValue={spiciness}
+            defaultValue={soupSpiciness}
             format={null}
             min={1}
             max={10}
@@ -119,7 +104,7 @@ let Form = ({
         </div>
       );
     }
-    if (type === `sandwich`) {
+    if (dishType === `sandwich`) {
       return (
         <div>
           <Typography>Slices: {slicesOfBread}</Typography>
@@ -147,6 +132,7 @@ let Form = ({
         hintText="Dish Name"
         floatingLabelText="Dish Name"
         className={styles.formInput}
+        required
       />
       <Typography>Preparation Time:</Typography>
       <Field
@@ -158,7 +144,7 @@ let Form = ({
         step="2"
         className={styles.formInput}
       />
-      <Field name="type" component={RadioButtonGroup}>
+      <Field name="dishType" component={RadioButtonGroup}>
         <FormControlLabel value="pizza" control={<Radio />} label="Pizza" />
         <FormControlLabel value="soup" control={<Radio />} label="Soup" />
         <FormControlLabel
@@ -168,7 +154,7 @@ let Form = ({
         />
       </Field>
       {handleDishType()}
-      <Button variant="contained">Submit</Button>
+      <Button>Submit</Button>
       <main>{children}</main>
     </form>
   );
@@ -176,31 +162,37 @@ let Form = ({
 
 Form.propTypes = {
   children: PropTypes.node,
-  type: PropTypes.string,
-  diameter: PropTypes.number,
-  slicesOfPizza: PropTypes.number,
-  spiciness: PropTypes.number,
+  dishType: PropTypes.string,
+  pizzaDiameter: PropTypes.number,
   slicesOfBread: PropTypes.number,
+  slicesOfPizza: PropTypes.number,
+  soupSpiciness: PropTypes.number,
 };
 
 const selector = formValueSelector(`dish`);
 
 Form = connect((state) => {
-  const diameter = selector(state, `diameter`);
-  const slicesOfPizza = selector(state, `slicesOfPizza`);
-  const spiciness = selector(state, `spiciness`);
-  const type = selector(state, `type`);
+  const dishType = selector(state, `dishType`);
+  const pizzaDiameter = selector(state, `pizzaDiameter`);
   const slicesOfBread = selector(state, `slicesOfBread`);
+  const slicesOfPizza = selector(state, `slicesOfPizza`);
+  const soupSpiciness = selector(state, `soupSpiciness`);
 
   return {
-    type,
-    slicesOfPizza,
-    diameter,
-    spiciness,
+    dishType,
+    pizzaDiameter,
     slicesOfBread,
+    slicesOfPizza,
+    soupSpiciness,
   };
 })(Form);
 
 export default reduxForm({
   form: `dish`,
+  initialValues: {
+    pizzaDiameter: 30,
+    slicesOfBread: 1,
+    slicesOfPizza: 1,
+    soupSpiciness: 1,
+  },
 })(Form);
