@@ -1,92 +1,97 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-// import { useDispatch } from 'react-redux';
-import { createNumberMask, createTextMask } from 'redux-form-input-masks';
-import { TextField } from '@material-ui/core';
-import { TimePicker } from '@material-ui/lab';
+import React from 'react';
+import { connect } from 'react-redux';
+
+import { Slider } from 'redux-form-material-ui';
+import {
+  TextField,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Typography,
+} from '@material-ui/core';
 
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import styles from './Form.module.scss';
 
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+let Form = ({ children, diameter }) => {
+  /* eslint-disable react/jsx-props-no-spreading */
 
-const Form = ({ children }) => {
-  console.log(`Form`);
-  // const dispatch = useDispatch();
-  const preparationMask = createTextMask({
-    pattern: `[a-z]{1,15}`,
-  });
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(`handleSubmit`, e);
   };
-  /* eslint-disable react/jsx-props-no-spreading */
+  // useEffect(() => {
+  //   dispatch(actionName(`whatToDispatch`));
+  // }, []);
 
-  const renderTextField = ({
-    input,
-    label,
-    meta: { touched, error },
-    ...custom
-  }) => (
+  const renderTextField = ({ input, label, meta: { touched, error } }) => (
     <TextField
       hintText={label}
       floatingLabelText={label}
-      variant="filled"
-      placeholder={label}
-      errorText={touched && error}
-      {...input}
-      {...custom}
-    />
-  );
-
-  const renderTimePicker = ({
-    input,
-    placeholder,
-    step,
-    label,
-    meta: { touched, error },
-    ...custom
-  }) => (
-    <TextField
-      openTo="seconds"
-      type="time"
-      views={[`hours`, `minutes`, `seconds`]}
-      inputFormat="HH:mm:ss"
       label={label}
-      renderInput={(params) => <TextField {...params} />}
+      errorText={touched && error}
+      variant="filled"
+      value={input.value}
+      {...input}
     />
   );
 
-  useEffect(() => {
-    // dispatch(actionName(`whatToDispatch`));
-  }, []);
+  const renderRadioGroup = ({ input, ...rest }) => (
+    <RadioGroup
+      row
+      {...input}
+      {...rest}
+      valueSelected={input.value}
+      onChange={(event, value) => input.onChange(value)}
+    />
+  );
+
   return (
     <form className={styles.root} onSubmit={(e) => handleSubmit(e)}>
       <h2>Form</h2>
-      {/* <Field
-        name="name"
-        component="input"
-        type="text"
-        placeholder="Dish Name"
-      /> */}
-      <Field name="name" component={renderTextField} label="Dish Name" />
       <Field
-        name="preparation_time"
-        component={renderTimePicker}
-        label="Preparation Time"
-        placeholder="00:00:00"
-        step="2"
+        name="name"
+        component={renderTextField}
+        label="Dish Name"
+        className={styles.formInput}
       />
-      {/*
       <Field
         name="preparation_time"
         component="input"
         type="time"
-        step="2"
+        label="Time of preparation"
         placeholder="00:00:00"
-      /> */}
+        step="2"
+        className={styles.formInput}
+      />
+      <Field name="type" component={renderRadioGroup}>
+        <FormControlLabel value="pizza" control={<Radio />} label="Pizza" />
+        <FormControlLabel value="soup" control={<Radio />} label="Soup" />
+        <FormControlLabel
+          value="sandwich"
+          control={<Radio />}
+          label="Sandwich"
+        />
+      </Field>
+      <Typography id="discrete-slider" gutterBottom>
+        Diameter
+        {diameter}
+      </Typography>
+      <Field
+        name="diameter"
+        component={Slider}
+        label="Diameter"
+        className={styles.formSlider}
+        defaultValue={30}
+        format={null}
+        min={10}
+        max={60}
+        step={1}
+      />
+      <Button variant="contained">Submit</Button>
       <main>{children}</main>
     </form>
   );
@@ -94,8 +99,18 @@ const Form = ({ children }) => {
 
 Form.propTypes = {
   children: PropTypes.node,
+  diameter: PropTypes.number,
 };
 
+const selector = formValueSelector(`dish`);
+
+Form = connect((state) => {
+  const diameter = selector(state, `diameter`);
+  return {
+    diameter,
+  };
+})(Form);
+
 export default reduxForm({
-  form: `dish`, // a unique identifier for this form
+  form: `dish`,
 })(Form);

@@ -6,8 +6,39 @@
   width: 90%;
   border: 50px white solid;
   border-image: url("/images/border.svg") 100;
-  * {
+  .formInput {
     margin: 1rem;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: 0.2s;
+    cursor: pointer;
+    background: none;
+    border: none;
+    // width: ;
+    height: 1.4375em;
+    outline: none;
+    &:after {
+      position: absolute;
+      transition: 0.2s;
+      content: "";
+      width: 0;
+      left: 50%;
+      bottom: 0;
+      height: 2px;
+      background: #fff;
+    }
+    &:focus {
+      cursor: pointer;
+      &:after {
+        width: 100%;
+        left: 0;
+      }
+    }
+  }
+  .formSlider {
+    width: 100%;
   }
 }
 
