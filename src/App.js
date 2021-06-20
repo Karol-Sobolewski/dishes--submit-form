@@ -4,36 +4,30 @@ import { CssBaseline } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 // import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import { MainLayout } from './components/layout/MainLayout/MainLayout';
 import { HomePage } from './components/views/HomePage/HomePage';
+
 // import { NotFound } from './components/views/NotFound/NotFound';
 import './styles/bootstrap.scss';
 import './styles/normalize.scss';
 import styles from './App.module.scss';
 
 const App = () => {
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: `#fff`,
-      },
-      secondary: {
-        main: `rgba(255, 255, 255, 0.7)`,
-      },
-      type: `dark`,
-    },
-  });
+  const theme = getMuiTheme(darkBaseTheme);
   return (
-    <div className={styles.root}>
-      <MuiThemeProvider theme={theme}>
-        {/* <CssBaseline /> */}
+    <MuiThemeProvider muiTheme={theme}>
+      <CssBaseline />
+      <div className={styles.root}>
         <BrowserRouter>
           <MainLayout>
             <Route exact path="/" component={() => <HomePage />} />
           </MainLayout>
         </BrowserRouter>
-      </MuiThemeProvider>
-    </div>
+      </div>
+    </MuiThemeProvider>
   );
 };
 export default App;
