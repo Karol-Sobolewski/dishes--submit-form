@@ -1,18 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
-import { Slider, TextField, RadioButtonGroup } from 'redux-form-material-ui';
-import {
-  Button,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Typography,
-} from '@material-ui/core';
-
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
-import { TimePicker } from '@material-ui/lab';
+import { TextField, RadioButtonGroup } from 'redux-form-material-ui';
+import { Button, Radio, FormControlLabel, Typography } from '@material-ui/core';
 
 import PropTypes from 'prop-types';
 import {
@@ -22,29 +12,12 @@ import {
   destroy,
   reset,
   formValues,
-  getFormValues,
 } from 'redux-form';
 
-import formatDistanceStrictWithOptions from 'date-fns/fp/formatDistanceStrictWithOptions';
 import styles from './Form.module.scss';
 import DishType from './DishType';
 
 const uniqid = require(`uniqid`);
-
-const validate = (values) => {
-  // console.log(`values`, values);
-  const errors = {};
-  if (
-    !values.dishName ||
-    !values.dishType ||
-    !values.preparationTime ||
-    !values.dishType
-  ) {
-    errors.name = `Requied`;
-    // console.log(`errors`);
-  }
-  return errors;
-};
 
 let Form = ({
   children,
@@ -214,10 +187,6 @@ Form = connect((state) => {
     `soupSpiciness`,
     `preparationTime`
   );
-  // const pizzaDiameter = selector(state, `pizzaDiameter`);
-  // const slicesOfBread = selector(state, `slicesOfBread`);
-  // const slicesOfPizza = selector(state, `slicesOfPizza`);
-  // const soupSpiciness = selector(state, `soupSpiciness`);
   return {
     dishType,
     dishName,
@@ -227,12 +196,10 @@ Form = connect((state) => {
     slicesOfPizza,
     soupSpiciness,
   };
-  // initialValues: state.dishes.data[0],
 })(Form);
 
 export default reduxForm({
   form: `dish`,
-  validate,
   initialValues: {
     pizzaDiameter: 30,
     slicesOfBread: 1,

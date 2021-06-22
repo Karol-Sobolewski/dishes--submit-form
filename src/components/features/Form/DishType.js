@@ -1,42 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch, connect } from 'react-redux';
+import React from 'react';
 // import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Typography,
-} from '@material-ui/core';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Typography } from '@material-ui/core';
+import { Container, Row } from 'react-bootstrap';
 import { Slider } from 'redux-form-material-ui';
-import {
-  Field,
-  reduxForm,
-  formValueSelector,
-  reset,
-  formValues,
-} from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import styles from './DishType.module.scss';
-
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-
-// const [initialData, setInitialData] = useState({
-//   pizzaDiameter: 30,
-//   slicesOfBread: 1,
-//   slicesOfPizza: 1,
-//   soupSpiciness: 1,
-// });
-
-// let initialData = {
-//   // pizzaDiameter: 30,
-//   // slicesOfBread: 1,
-//   // slicesOfPizza: 1,
-//   // soupSpiciness: 1,
-// };
-
-// const ItemList = formValues(`withVat`)(MyItemizedList);
 
 const DishType = ({ children, dishValues }) =>
   dishValues.data ? (
