@@ -1,5 +1,5 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { connect, useDispatch } from 'react-redux';
 
 import { Slider, TextField, RadioButtonGroup } from 'redux-form-material-ui';
 import {
@@ -15,9 +15,36 @@ import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import { TimePicker } from '@material-ui/lab';
 
 import PropTypes from 'prop-types';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import {
+  Field,
+  reduxForm,
+  formValueSelector,
+  destroy,
+  reset,
+  formValues,
+  getFormValues,
+} from 'redux-form';
 
+import formatDistanceStrictWithOptions from 'date-fns/fp/formatDistanceStrictWithOptions';
 import styles from './Form.module.scss';
+import DishType from './DishType';
+
+const uniqid = require(`uniqid`);
+
+const validate = (values) => {
+  // console.log(`values`, values);
+  const errors = {};
+  if (
+    !values.dishName ||
+    !values.dishType ||
+    !values.preparationTime ||
+    !values.dishType
+  ) {
+    errors.name = `Requied`;
+    // console.log(`errors`);
+  }
+  return errors;
+};
 
 let Form = ({
   children,
@@ -26,108 +53,93 @@ let Form = ({
   slicesOfBread,
   slicesOfPizza,
   soupSpiciness,
+  dishName,
+  preparationTime,
 }) => {
   /* eslint-disable react/jsx-props-no-spreading */
 
+  const [dishValues, setDishValues] = useState(``);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`handleSubmit`, e);
-  };
-  // useEffect(() => {
-  //   dispatch(actionName(`whatToDispatch`));
-  // }, []);
-
-  // const renderTimePicker = ({
-  //   input,
-  //   label,
-  //   meta: { touched, error },
-  //   ...custom
-  // }) => (
-  //   <LocalizationProvider dateAdapter={AdapterDateFns}>
-  //     <TimePicker
-  //       ampm={false}
-  //       openTo="hours"
-  //       views={[`hours`, `minutes`, `seconds`]}
-  //       inputFormat="HH:mm:ss"
-  //       mask="__:__:__"
-  //       defaultValue="01:00:00"
-  //       renderInput={(params) => <TextField {...params} />}
-  //       {...input}
-  //       {...custom}
-  //     />
-  //   </LocalizationProvider>
-  // );
-
-  const handleDishType = () => {
-    if (dishType === `pizza`) {
-      return (
-        <div>
-          <Typography>Slices: {slicesOfPizza}</Typography>
-          <Field
-            name="slicesOfPizza"
-            component={Slider}
-            className={styles.formSlider}
-            defaultValue={0}
-            format={null}
-            min={1}
-            max={10}
-            step="1"
-          />
-          <Typography>Diameter: {pizzaDiameter} cm</Typography>
-          <Field
-            name="pizzaDiameter"
-            component={Slider}
-            className={styles.formSlider}
-            defaultValue={pizzaDiameter}
-            format={null}
-            min={10}
-            max={60}
-            step="0.1"
-          />
-        </div>
-      );
-    }
-    if (dishType === `soup`) {
-      return (
-        <div>
-          <Typography>Spiciness: {soupSpiciness}</Typography>
-          <Field
-            name="soupSpiciness"
-            component={Slider}
-            className={styles.formSlider}
-            defaultValue={soupSpiciness}
-            format={null}
-            min={1}
-            max={10}
-            step="1"
-          />
-        </div>
-      );
-    }
-    if (dishType === `sandwich`) {
-      return (
-        <div>
-          <Typography>Slices: {slicesOfBread}</Typography>
-          <Field
-            name="slicesOfBread"
-            component={Slider}
-            className={styles.formSlider}
-            defaultValue={slicesOfBread}
-            format={null}
-            min={1}
-            max={10}
-            step="1"
-          />
-        </div>
-      );
-    }
+    const data = formValues(`dish`)(Form);
+    console.log(
+      `dishType`,
+      dishType,
+      pizzaDiameter,
+      slicesOfBread,
+      slicesOfPizza,
+      soupSpiciness,
+      dishName,
+      preparationTime
+    );
   };
 
+  const handleChange = (type) => {
+    console.log(`type`, type);
+    if (type === `pizza`) {
+      setDishValues({
+        data: [
+          {
+            defaultValue: 30,
+            label: `Diameter of pizza (in cm):`,
+            max: 60,
+            min: 10,
+            name: `pizzaDiameter`,
+            step: 0.1,
+            type: `pizza`,
+            value: pizzaDiameter,
+          },
+          {
+            defaultValue: 1,
+            label: `Slices of pizza:`,
+            max: 10,
+            min: 0,
+            name: `slicesOfPizza`,
+            step: 1,
+            type: `pizza`,
+            value: slicesOfPizza,
+          },
+        ],
+      });
+    }
+    if (type === `soup`) {
+      setDishValues({
+        data: [
+          {
+            defaultValue: 1,
+            label: `Spiciness:`,
+            max: 10,
+            min: 0,
+            name: `soupSpiciness`,
+            step: 1,
+            type: `soup`,
+            value: soupSpiciness,
+          },
+        ],
+      });
+    }
+    if (type === `sandwich`) {
+      setDishValues({
+        data: [
+          {
+            defaultValue: 1,
+            label: `Slices of bread:`,
+            max: 10,
+            min: 0,
+            name: `slicesOfBread`,
+            step: 1,
+            type: `sandwich`,
+            value: slicesOfBread,
+          },
+        ],
+      });
+    }
+  };
   return (
     <form className={styles.root} onSubmit={(e) => handleSubmit(e)}>
       <h2>Form</h2>
       <Field
-        name="name"
+        name="dishName"
         component={TextField}
         hintText="Dish Name"
         floatingLabelText="Dish Name"
@@ -136,15 +148,21 @@ let Form = ({
       />
       <Typography>Preparation Time:</Typography>
       <Field
-        name="preparation_time"
+        name="preparationTime"
         component="input"
         type="time"
         value="01:00:00"
         floatingLabelText="Dish Name"
         step="2"
         className={styles.formInput}
+        required
       />
-      <Field name="dishType" component={RadioButtonGroup}>
+      <Field
+        name="dishType"
+        component={RadioButtonGroup}
+        onChange={(e) => handleChange(e.target.value)}
+        required
+      >
         <FormControlLabel value="pizza" control={<Radio />} label="Pizza" />
         <FormControlLabel value="soup" control={<Radio />} label="Soup" />
         <FormControlLabel
@@ -153,8 +171,12 @@ let Form = ({
           label="Sandwich"
         />
       </Field>
-      {handleDishType()}
-      <Button>Submit</Button>
+      <DishType
+        dishValues={dishValues}
+        dishType={dishType}
+        // onChange={() => handleChange(dishType)}
+      />
+      <Button type="submit">Submit</Button>
       <main>{children}</main>
     </form>
   );
@@ -167,32 +189,55 @@ Form.propTypes = {
   slicesOfBread: PropTypes.number,
   slicesOfPizza: PropTypes.number,
   soupSpiciness: PropTypes.number,
+  dishName: PropTypes.string,
+  preparationTime: PropTypes.string,
 };
 
 const selector = formValueSelector(`dish`);
 
 Form = connect((state) => {
-  const dishType = selector(state, `dishType`);
-  const pizzaDiameter = selector(state, `pizzaDiameter`);
-  const slicesOfBread = selector(state, `slicesOfBread`);
-  const slicesOfPizza = selector(state, `slicesOfPizza`);
-  const soupSpiciness = selector(state, `soupSpiciness`);
-
+  const {
+    dishType,
+    dishName,
+    pizzaDiameter,
+    slicesOfBread,
+    slicesOfPizza,
+    soupSpiciness,
+    preparationTime,
+  } = selector(
+    state,
+    `dishType`,
+    `dishName`,
+    `pizzaDiameter`,
+    `slicesOfBread`,
+    `slicesOfPizza`,
+    `soupSpiciness`,
+    `preparationTime`
+  );
+  // const pizzaDiameter = selector(state, `pizzaDiameter`);
+  // const slicesOfBread = selector(state, `slicesOfBread`);
+  // const slicesOfPizza = selector(state, `slicesOfPizza`);
+  // const soupSpiciness = selector(state, `soupSpiciness`);
   return {
     dishType,
+    dishName,
+    preparationTime,
     pizzaDiameter,
     slicesOfBread,
     slicesOfPizza,
     soupSpiciness,
   };
+  // initialValues: state.dishes.data[0],
 })(Form);
 
 export default reduxForm({
   form: `dish`,
+  validate,
   initialValues: {
     pizzaDiameter: 30,
     slicesOfBread: 1,
     slicesOfPizza: 1,
     soupSpiciness: 1,
   },
+  enableReinitialize: true,
 })(Form);

@@ -1,0 +1,10 @@
+@import "../../../styles/settings.scss";
+
+.root {
+  @include flex(column, center, center);
+  text-align: center;
+  width: 100%;
+  .formSlider {
+    width: 100%;
+  }
+}

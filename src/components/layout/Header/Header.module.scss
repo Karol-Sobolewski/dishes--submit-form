@@ -2,8 +2,7 @@
 
 .root {
   @include flex(row, center, space-around);
-  height: 15vh;
-  position: fixed;
+  text-align: center;
   top: 0;
   z-index: 100;
 }

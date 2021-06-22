@@ -1,5 +1,5 @@
 export default {
   dishes: {
-    data: [],
+    // data: [{ pizzaDiameter: 10 }],
   },
 };
