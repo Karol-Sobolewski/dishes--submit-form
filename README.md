@@ -12,6 +12,16 @@
 ## Install
 
 ```sh
+node -v
+v14.17.1
+```
+
+```sh
+npm -v
+7.14.0
+```
+
+```sh
 yarn install
 ```
 
