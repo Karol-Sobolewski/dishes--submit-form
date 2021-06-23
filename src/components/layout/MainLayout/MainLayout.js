@@ -11,7 +11,6 @@ const Component = ({ children }) => (
     <Container className={styles.pageContainer}>
       <Header />
       {children}
-      {/* <p>Footer</p> */}
     </Container>
   </div>
 );

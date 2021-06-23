@@ -3,8 +3,13 @@
 .root {
   @include flex(column, center, center);
   text-align: center;
-  width: 100%;
-  .formSlider {
+  width: 80%;
+  .sliderSection {
+    @include flex(column, center, center);
     width: 100%;
+
+    .formSlider {
+      width: 100%;
+    }
   }
 }

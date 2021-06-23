@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-
+import { connect, useDispatch } from 'react-redux';
 import { TextField, RadioButtonGroup } from 'redux-form-material-ui';
 import { Button, Radio, FormControlLabel, Typography } from '@material-ui/core';
 
@@ -11,11 +10,11 @@ import {
   formValueSelector,
   destroy,
   reset,
-  formValues,
 } from 'redux-form';
 
 import styles from './Form.module.scss';
 import DishType from './DishType';
+import { addDishRequest } from '../../../redux/dishRedux';
 
 const uniqid = require(`uniqid`);
 
@@ -32,23 +31,81 @@ let Form = ({
   /* eslint-disable react/jsx-props-no-spreading */
 
   const [dishValues, setDishValues] = useState(``);
+  const [dish, setDish] = useState(``);
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = formValues(`dish`)(Form);
-    console.log(
-      `dishType`,
-      dishType,
-      pizzaDiameter,
-      slicesOfBread,
-      slicesOfPizza,
-      soupSpiciness,
-      dishName,
-      preparationTime
-    );
+    if (dishType === `pizza`) {
+      setDish({
+        name: dishName,
+        no_of_slices: slicesOfPizza,
+        diameter: pizzaDiameter,
+        preparation_time: preparationTime,
+        type: dishType,
+        id: uniqid(),
+      });
+      const formData = new FormData();
+      for (const key of [
+        `name`,
+        `no_of_slices`,
+        `diameter`,
+        `preparation_time`,
+        `type`,
+        `id`,
+      ]) {
+        formData.append(key, dish[key]);
+      }
+      dispatch(addDishRequest(formData));
+      reset(Form);
+      destroy(Form);
+    }
+    if (dishType === `soup`) {
+      setDish({
+        name: dishName,
+        spiciness_scale: soupSpiciness,
+        preparation_time: preparationTime,
+        type: dishType,
+        id: uniqid(),
+      });
+      const formData = new FormData();
+      for (const key of [
+        `name`,
+        `spiciness_scale`,
+        `preparation_time`,
+        `type`,
+        `id`,
+      ]) {
+        formData.append(key, dish[key]);
+      }
+      dispatch(addDishRequest(formData));
+      reset(Form);
+      destroy(Form);
+    }
+    if (dishType === `sandwich`) {
+      setDish({
+        name: dishName,
+        slices_of_bread: slicesOfBread,
+        preparation_time: preparationTime,
+        type: dishType,
+        id: uniqid(),
+      });
+      const formData = new FormData();
+      for (const key of [
+        `name`,
+        `spiciness_scale`,
+        `slices_of_bread`,
+        `type`,
+        `id`,
+      ]) {
+        formData.append(key, dish[key]);
+      }
+      dispatch(addDishRequest(formData));
+      reset(Form);
+      destroy(Form);
+    }
   };
 
   const handleChange = (type) => {
-    console.log(`type`, type);
     if (type === `pizza`) {
       setDishValues({
         data: [
@@ -147,7 +204,7 @@ let Form = ({
       <DishType
         dishValues={dishValues}
         dishType={dishType}
-        // onChange={() => handleChange(dishType)}
+        onChange={() => handleChange(dishType)}
       />
       <Button type="submit">Submit</Button>
       <main>{children}</main>
