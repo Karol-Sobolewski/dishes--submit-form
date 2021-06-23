@@ -25,6 +25,8 @@ const filesToCache = [
   `/icon/ms-icon-150x150.png`,
   `/icon/ms-icon-310x310.png`,
   `/icon/ms-icon-70x70.png`,
+  `/images/border.svg`,
+  `/images/chalkboard.jpg`,
   `/index.html`,
 ];
 self.addEventListener(`install`, function (e) {  //eslint-disable-line

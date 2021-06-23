@@ -10,7 +10,6 @@ const DishType = ({ children, dishValues }) =>
   dishValues.data ? (
     <div className={styles.root}>
       <Container>
-        {console.log(`dishValues`, dishValues)}
         <Row>
           {dishValues.data.map((dishValue, i) => (
             <div className={styles.sliderSection} key={i}>

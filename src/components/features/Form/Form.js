@@ -33,7 +33,7 @@ let Form = ({
   const [dishValues, setDishValues] = useState(``);
   const [dish, setDish] = useState(``);
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (dishType === `pizza`) {
       setDish({
@@ -55,9 +55,10 @@ let Form = ({
       ]) {
         formData.append(key, dish[key]);
       }
-      dispatch(addDishRequest(formData));
-      reset(Form);
-      destroy(Form);
+      await dispatch(addDishRequest(formData));
+      dispatch(reset(`dish`));
+      dispatch(destroy(`dish`));
+      setDishValues(``);
     }
     if (dishType === `soup`) {
       setDish({
@@ -77,9 +78,10 @@ let Form = ({
       ]) {
         formData.append(key, dish[key]);
       }
-      dispatch(addDishRequest(formData));
-      reset(Form);
-      destroy(Form);
+      await dispatch(addDishRequest(formData));
+      dispatch(reset(`dish`));
+      dispatch(destroy(`dish`));
+      setDishValues(``);
     }
     if (dishType === `sandwich`) {
       setDish({
@@ -99,9 +101,10 @@ let Form = ({
       ]) {
         formData.append(key, dish[key]);
       }
-      dispatch(addDishRequest(formData));
-      reset(Form);
-      destroy(Form);
+      await dispatch(addDishRequest(formData));
+      dispatch(reset(`dish`));
+      dispatch(destroy(`dish`));
+      setDishValues(``);
     }
   };
 
@@ -206,7 +209,9 @@ let Form = ({
         dishType={dishType}
         onChange={() => handleChange(dishType)}
       />
-      <Button type="submit">Submit</Button>
+      <Button type="submit" variant="outlined" color="primary">
+        Submit
+      </Button>
       <main>{children}</main>
     </form>
   );
